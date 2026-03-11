@@ -1,66 +1,61 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>MASTER_CONSOLE_V23</title>
+    <title>TERMINAL_UBUNTU_v25</title>
     <style>
-        body { margin: 0; background: #000; color: #00ff41; font-family: 'Courier New', monospace; display: flex; height: 100vh; overflow: hidden; }
+        body { margin: 0; background: #000; color: #e95420; font-family: 'Ubuntu', 'Courier New', monospace; display: flex; height: 100vh; overflow: hidden; }
         
-        /* Sidebar Styling */
-        #sidebar { width: 260px; border-right: 2px solid #00ff41; padding: 20px; display: flex; flex-direction: column; gap: 12px; background: #010a01; z-index: 10; }
-        .btn { background: #000; color: #00ff41; border: 1px solid #00ff41; padding: 12px; cursor: pointer; text-align: left; font-weight: bold; }
-        .btn:hover { background: #00ff41; color: #000; }
+        #sidebar { width: 260px; border-right: 2px solid #e95420; padding: 20px; display: flex; flex-direction: column; gap: 15px; background: #300a24; z-index: 10; }
+        .btn { background: #5e2750; color: #fff; border: 1px solid #aea79f; padding: 12px; cursor: pointer; text-align: left; font-weight: bold; border-radius: 4px; }
+        .btn:hover { background: #e95420; }
         
-        /* The "Monitor" Screen */
-        #display-container { flex: 1; background: #111; position: relative; }
+        #display-container { flex: 1; background: #000; position: relative; }
         iframe { width: 100%; height: 100%; border: none; }
         
-        .status-box { font-size: 11px; color: #008800; margin-bottom: 10px; border: 1px solid #004400; padding: 5px; }
-        .emergency-btn { margin-top: auto; border-color: #ff3e3e; color: #ff3e3e; }
+        .status-box { font-size: 11px; color: #aea79f; margin-bottom: 10px; border: 1px solid #5e2750; padding: 8px; background: #2c001e; }
+        .reset-btn { margin-top: auto; border-color: #ff3e3e; color: #ff3e3e; background: transparent; }
     </style>
 </head>
 <body>
 
 <div id="sidebar">
-    <h2>CORE_v23</h2>
-    <div class="status-box">OS_LINK: STABLE<br>DRIVE: CLOUD_HD_0</div>
+    <h2 style="color: #fff;">UBUNTU_CORE</h2>
+    <div class="status-box">DISTRO: UBUNTU_22.04<br>KERNEL: CLOUD_VIRTUAL</div>
 
-    <button class="btn" onclick="bootOS('https://dustinbrett.com/')">▶ BOOT_WIN10</button>
+    <button class="btn" onclick="bootUbuntu()">▶ LAUNCH_UBUNTU</button>
     
-    <button class="btn" onclick="bootOS('https://win11.blueedge.me/')">▶ BOOT_WIN11_(maybeidk)</button>
-
-    <button class="btn emergency-btn" onclick="triggerReset()"> RUN_REDONE</button>
+    <button class="btn reset-btn" onclick="triggerReset()">☢️ TERMINATE_SESSION</button>
     
-    <div id="console-log" style="font-size: 10px; margin-top: 10px;">> STANDBY</div>
+    <div id="log" style="font-size: 10px; margin-top: 10px; color: #aea79f;">> READY_FOR_BOOT</div>
 </div>
 
 <div id="display-container">
-    <iframe id="monitor" src="about:blank"></iframe>
+    <iframe id="monitor" src="about:blank" allow="clipboard-read; clipboard-write; fullscreen"></iframe>
 </div>
 
 <script>
-    function bootOS(url) {
+    function bootUbuntu() {
         const monitor = document.getElementById('monitor');
-        const log = document.getElementById('console-log');
+        const log = document.getElementById('log');
         
-        log.innerText = "> INITIALIZING_KERNEL...";
-        monitor.src = url;
+        log.innerText = "> ALLOCATING_CLOUD_RESOURCES...";
+        
+        // This links to a free, instant Ubuntu workstation
+        monitor.src = "https://www.onworks.net/run-onsite/ubuntu-v-22-04-onsite";
         
         monitor.onload = () => {
-            log.innerText = "> SYSTEM_LIVE_AND_STABLE";
+            log.innerText = "> UBUNTU_STREAM_ACTIVE";
         };
     }
 
     function triggerReset() {
-        // Since these are external sites, we can't 'BSOD' them, 
-        // but we can "Crash" the monitor and reboot it.
-        const log = document.getElementById('console-log');
-        log.innerText = "> EMERGENCY_RESET_TRIGGERED";
+        const log = document.getElementById('log');
+        log.innerText = "> KILLING_PROCESSES...";
         document.getElementById('monitor').src = "about:blank";
         
         setTimeout(() => {
-            log.innerText = "> REBOOTING...";
-            bootOS('https://dustinbrett.com/');
-        }, 2000);
+            log.innerText = "> SYSTEM_PURGED. STANDBY.";
+        }, 1500);
     }
 </script>
 </body>
