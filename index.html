@@ -1,46 +1,75 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>TERMINAL_UBUNTU_v26</title>
+    <title>UBUNTU_LIGHT_v28</title>
     <style>
-        body { margin: 0; background: #000; color: #e95420; font-family: 'Ubuntu', monospace; display: flex; height: 100vh; overflow: hidden; }
-        #sidebar { width: 250px; border-right: 2px solid #e95420; padding: 20px; display: flex; flex-direction: column; gap: 12px; background: #1e0918; }
-        .btn { background: #5e2750; color: #fff; border: 1px solid #aea79f; padding: 12px; cursor: pointer; border-radius: 4px; font-family: inherit; }
-        .btn:hover { background: #e95420; }
-        #monitor-area { flex: 1; background: #000; }
-        iframe { width: 100%; height: 100%; border: none; }
-        .log { font-size: 10px; color: #772953; margin-top: auto; border-top: 1px solid #333; pt: 10px; }
+        body { 
+            margin: 0; 
+            background: #401030 url('https://wallpaperaccess.com/full/1510344.jpg'); 
+            background-size: cover;
+            font-family: 'Ubuntu', sans-serif;
+            height: 100vh; overflow: hidden;
+        }
+        
+        /* Sidebar/Dock */
+        #dock { 
+            position: fixed; left: 0; top: 0; bottom: 0; width: 60px; 
+            background: rgba(0,0,0,0.5); backdrop-filter: blur(5px);
+            display: flex; flex-direction: column; align-items: center; padding-top: 20px; gap: 20px;
+        }
+        .icon { width: 40px; height: 40px; cursor: pointer; transition: 0.2s; }
+        .icon:hover { transform: scale(1.2); }
+
+        /* Terminal Window */
+        .window {
+            position: absolute; top: 10%; left: 100px; width: 800px; height: 500px;
+            background: #300a24; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: none; flex-direction: column; border: 1px solid #5e2750;
+        }
+        .win-header { 
+            background: #444; padding: 10px; border-radius: 8px 8px 0 0;
+            display: flex; justify-content: space-between; color: white; cursor: move;
+        }
+        .close-btn { color: #ef5350; cursor: pointer; font-weight: bold; }
+        
+        iframe { flex: 1; border: none; background: #000; }
+        
+        /* Top Bar */
+        #top-bar { height: 30px; background: rgba(0,0,0,0.8); width: 100%; color: white; display: flex; align-items: center; padding: 0 20px; font-size: 13px; }
     </style>
 </head>
 <body>
 
-<div id="sidebar">
-    <h3>UBUNTU_v26</h3>
-    <button class="btn" onclick="boot('ubuntu')">▶ BOOT_UBUNTU</button>
-    <button class="btn" onclick="boot('gui')">▶ BOOT_X_WINDOW</button>
-    
-    <div class="log" id="status-log">> SYSTEM_IDLE</div>
+<div id="top-bar">Activities &nbsp;&nbsp;&nbsp; Mar 11 19:35</div>
+
+<div id="dock">
+    <img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/a/af/Adobe_Photoshop_CC_icon.svg" onclick="alert('App Loading...')">
+    <img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/a/ab/Android_Terminal_Emulator_Icon.png" onclick="openTerminal()">
+    <img class="icon" src="https://upload.wikimedia.org/wikipedia/commons/4/4f/Firefox_logo%2C_2019.svg" onclick="alert('Browser Locked')">
 </div>
 
-<div id="monitor-area">
-    <iframe id="screen" src="about:blank"></iframe>
+<div id="term-window" class="window">
+    <div class="win-header">
+        <span>Terminal (Ubuntu Core)</span>
+        <span class="close-btn" onclick="closeTerminal()">●</span>
+    </div>
+    <iframe id="linux-frame" src="about:blank"></iframe>
 </div>
 
 <script>
-    function boot(type) {
-        const screen = document.getElementById('screen');
-        const log = document.getElementById('status-log');
-        log.innerText = "> MOUNTING_FILESYSTEM...";
+    function openTerminal() {
+        const win = document.getElementById('term-window');
+        const frame = document.getElementById('linux-frame');
+        win.style.display = 'flex';
         
-        if(type === 'ubuntu') {
-            // This is a specialized WebVM for Linux
-            screen.src = "https://bellard.org/jslinux/vm.html?cpu=riscv64&url=fedora33-riscv.cfg&mem=256";
-        } else {
-            // This is a Graphical version
-            screen.src = "https://bellard.org/jslinux/vm.html?url=win2k.cfg&mem=192";
+        // Only load if it hasn't been loaded yet
+        if (frame.src === "about:blank") {
+            frame.src = "https://copy.sh/v86/?profile=alpine";
         }
+    }
 
-        screen.onload = () => { log.innerText = "> KERNEL_LOADED_SUCCESS"; };
+    function closeTerminal() {
+        document.getElementById('term-window').style.display = 'none';
     }
 </script>
 </body>
