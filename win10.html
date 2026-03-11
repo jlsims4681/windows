@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { 
+            margin: 0; 
+            background: url('https://wallpapercave.com/wp/wp4465209.jpg') no-repeat center center fixed; 
+            background-size: cover; 
+            font-family: 'Segoe UI', sans-serif; 
+            height: 100vh; 
+            overflow: hidden; 
+        }
+        .taskbar { 
+            position: absolute; bottom: 0; width: 100%; height: 40px; 
+            background: rgba(0, 0, 0, 0.8); display: flex; align-items: center; 
+        }
+        .start-btn { width: 40px; height: 100%; color: white; display: flex; justify-content: center; align-items: center; cursor: pointer; }
+        .desktop-icon { 
+            width: 80px; padding: 20px; text-align: center; color: white; 
+            cursor: pointer; text-shadow: 1px 1px 2px black; 
+        }
+        .desktop-icon img { width: 45px; margin-bottom: 5px; }
+        
+        /* Blue Screen Effect */
+        #bsod { 
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: #0078d7; color: white; padding: 100px; font-size: 24px; z-index: 9999;
+        }
+    </style>
+</head>
+<body>
+
+<div id="desktop">
+    <div class="desktop-icon">
+        <img src="https://cdn-icons-png.flaticon.com/512/5968/5968260.png">
+        <div>This PC</div>
+    </div>
+</div>
+
+<div id="bsod">
+    <h1>:(</h1>
+    <p>Your Master Console initiated a REDONE reset.</p>
+    <p>Restarting system... 0% complete</p>
+</div>
+
+<div class="taskbar">
+    <div class="start-btn">⊞</div>
+</div>
+
+<script>
+    // Listen for the "Reset" signal from the Dashboard
+    window.addEventListener("message", (event) => {
+        if (event.data.type === "MACRO") {
+            document.getElementById('bsod').style.display = 'block';
+            let percent = 0;
+            const interval = setInterval(() => {
+                percent += 10;
+                document.querySelector('#bsod p:last-child').innerText = `Restarting system... ${percent}% complete`;
+                if (percent >= 100) {
+                    clearInterval(interval);
+                    location.reload(); // Reboots the "OS"
+                }
+            }, 300);
+        }
+    });
+</script>
+</body>
+</html>
