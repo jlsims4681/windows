@@ -1,61 +1,46 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>TERMINAL_UBUNTU_v25</title>
+    <title>TERMINAL_UBUNTU_v26</title>
     <style>
-        body { margin: 0; background: #000; color: #e95420; font-family: 'Ubuntu', 'Courier New', monospace; display: flex; height: 100vh; overflow: hidden; }
-        
-        #sidebar { width: 260px; border-right: 2px solid #e95420; padding: 20px; display: flex; flex-direction: column; gap: 15px; background: #300a24; z-index: 10; }
-        .btn { background: #5e2750; color: #fff; border: 1px solid #aea79f; padding: 12px; cursor: pointer; text-align: left; font-weight: bold; border-radius: 4px; }
+        body { margin: 0; background: #000; color: #e95420; font-family: 'Ubuntu', monospace; display: flex; height: 100vh; overflow: hidden; }
+        #sidebar { width: 250px; border-right: 2px solid #e95420; padding: 20px; display: flex; flex-direction: column; gap: 12px; background: #1e0918; }
+        .btn { background: #5e2750; color: #fff; border: 1px solid #aea79f; padding: 12px; cursor: pointer; border-radius: 4px; font-family: inherit; }
         .btn:hover { background: #e95420; }
-        
-        #display-container { flex: 1; background: #000; position: relative; }
+        #monitor-area { flex: 1; background: #000; }
         iframe { width: 100%; height: 100%; border: none; }
-        
-        .status-box { font-size: 11px; color: #aea79f; margin-bottom: 10px; border: 1px solid #5e2750; padding: 8px; background: #2c001e; }
-        .reset-btn { margin-top: auto; border-color: #ff3e3e; color: #ff3e3e; background: transparent; }
+        .log { font-size: 10px; color: #772953; margin-top: auto; border-top: 1px solid #333; pt: 10px; }
     </style>
 </head>
 <body>
 
 <div id="sidebar">
-    <h2 style="color: #fff;">UBUNTU_CORE</h2>
-    <div class="status-box">DISTRO: UBUNTU_22.04<br>KERNEL: CLOUD_VIRTUAL</div>
-
-    <button class="btn" onclick="bootUbuntu()">▶ LAUNCH_UBUNTU</button>
+    <h3>UBUNTU_v26</h3>
+    <button class="btn" onclick="boot('ubuntu')">▶ BOOT_UBUNTU</button>
+    <button class="btn" onclick="boot('gui')">▶ BOOT_X_WINDOW</button>
     
-    <button class="btn reset-btn" onclick="triggerReset()">☢️ TERMINATE_SESSION</button>
-    
-    <div id="log" style="font-size: 10px; margin-top: 10px; color: #aea79f;">> READY_FOR_BOOT</div>
+    <div class="log" id="status-log">> SYSTEM_IDLE</div>
 </div>
 
-<div id="display-container">
-    <iframe id="monitor" src="about:blank" allow="clipboard-read; clipboard-write; fullscreen"></iframe>
+<div id="monitor-area">
+    <iframe id="screen" src="about:blank"></iframe>
 </div>
 
 <script>
-    function bootUbuntu() {
-        const monitor = document.getElementById('monitor');
-        const log = document.getElementById('log');
+    function boot(type) {
+        const screen = document.getElementById('screen');
+        const log = document.getElementById('status-log');
+        log.innerText = "> MOUNTING_FILESYSTEM...";
         
-        log.innerText = "> ALLOCATING_CLOUD_RESOURCES...";
-        
-        // This links to a free, instant Ubuntu workstation
-        monitor.src = "https://www.onworks.net/run-onsite/ubuntu-v-22-04-onsite";
-        
-        monitor.onload = () => {
-            log.innerText = "> UBUNTU_STREAM_ACTIVE";
-        };
-    }
+        if(type === 'ubuntu') {
+            // This is a specialized WebVM for Linux
+            screen.src = "https://bellard.org/jslinux/vm.html?cpu=riscv64&url=fedora33-riscv.cfg&mem=256";
+        } else {
+            // This is a Graphical version
+            screen.src = "https://bellard.org/jslinux/vm.html?url=win2k.cfg&mem=192";
+        }
 
-    function triggerReset() {
-        const log = document.getElementById('log');
-        log.innerText = "> KILLING_PROCESSES...";
-        document.getElementById('monitor').src = "about:blank";
-        
-        setTimeout(() => {
-            log.innerText = "> SYSTEM_PURGED. STANDBY.";
-        }, 1500);
+        screen.onload = () => { log.innerText = "> KERNEL_LOADED_SUCCESS"; };
     }
 </script>
 </body>
